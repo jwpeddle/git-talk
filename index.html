@@ -1,79 +1,350 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Git-talk : git-talk" />
+    <title>Django Settings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://github.com/downloads/gnab/remark/remark-0.4.2.min.js" type="text/javascript">
+      { "highlightStyle": "sunburst" }
+    </script>
+    <style type="text/css" media="screen">
+      @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Git-talk</title>
+      body {
+        font-family: 'Droid Serif';
+        font-size: 24px;
+        color: #fff;
+      }
+      a {
+        color: #daa420
+      }
+      h1, h2 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        color: #daa420
+      }
+      h1 {
+        font-size: 3em;
+      }
+      h2 {
+        font-size: 2em;
+      }
+      h3 {
+        color: #fff;
+        font-size: 1.5em;
+      }
+      .slide {
+        background: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/debut_dark.png);
+      }
+      .content {
+        vertical-align: middle;
+      }
+    </style>
   </head>
-
   <body>
+    <textarea id="source">
+class: center
+# I f^*$ed up my git repo. Now what?
+![VM Farms](http://vmfarms.com/static/img/logo.png)
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/jwpeddle/git-talk">View on GitHub</a>
+---
+## A git repo
 
-          <h1 id="project_title">Git-talk</h1>
-          <h2 id="project_tagline">git-talk</h2>
+```
+$ git status
+# On branch master
+nothing to commit, working directory clean
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/jwpeddle/git-talk/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/jwpeddle/git-talk/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+$ ls
+README.md
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+$ cat README.md 
+hello world
+```
+---
+## A simple change
+```
+$ echo 'hello moon' > README.md 
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+$ git diff
+diff --git a/README.md b/README.md
+index 3b18e51..1b95c6e 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1 @@
+-hello world
++hello moon
+```
+---
+## Check status
+```
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   README.md
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+---
+## My change was stupid, throw it away
+```
+$ git checkout README.md
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+$ git status
+# On branch master
+nothing to commit, working directory clean
+```
+#### Good riddance, stupid change
+---
+## My ADDED change was stupid, throw it away
+```
+$ git add README.md 
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   README.md
+#
+```
+---
+## Reset and forget!
+```
+$ git reset HEAD README.md
+Unstaged changes after reset:
+M	README.md
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+$ git status -s
+M README.md
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+$ git checkout README.md
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+$ git status
+# On branch master
+nothing to commit, working directory clean
+```
+---
+## My COMMITED change was stupid, throw it away
+```
+$ git commit -a -m 'a stupid change'
+[master 7e241a8] a stupid change
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+$ git log
+commit 7e241a8458662dd7e9fc1539517a2c7df307b5ef
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 10:41:24 2013 -0500
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+    a stupid change
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+commit c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 06:16:33 2013 -0800
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+    hello world
+```
+---
+## Reset to non-stupid commit
+```
+$ git reset c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+Unstaged changes after reset:
+M	README.md
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
+$ git log
+commit c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 06:16:33 2013 -0800
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Git-talk maintained by <a href="https://github.com/jwpeddle">jwpeddle</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+    hello world
 
+$ git status -s
+M README.md
+```
+---
+## Same thing, but DESTORY ALL EVIDENCE
+```
+$ git reset --hard c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+HEAD is now at c3cf7f7 hello world
+
+$ git status
+# On branch master
+nothing to commit, working directory clean
+```
+---
+## My PUSHED change was stupid, throw it away
+```
+$ git push
+Counting objects: 5, done.
+Writing objects: 100% (3/3), 257 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:jwpeddle/git-talk.git
+   c3cf7f7..c926053  master -> master
+
+$ git reset --hard c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+HEAD is now at c3cf7f7 hello world
+git:master jason@kurtz ~/dev/git-talk 
+```
+#### I'll just reset, then push my change, muaha!
+---
+## Nope.
+```
+$ git push
+To git@github.com:jwpeddle/git-talk.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:jwpeddle/git-talk.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+---
+## Push harder
+```
+$ git push -f
+Total 0 (delta 0), reused 0 (delta 0)
+To git@github.com:jwpeddle/git-talk.git
+ + c926053...c3cf7f7 master -> master (forced update)
+```
+#### Don't do this :(
+---
+## Admit defeat, and push a fix
+```
+$ git revert fee84b14cee088934c69ea5fd1c168e1b55970c5 --no-commit
+
+$ git diff
+diff --git a/README.md b/README.md
+index 1b95c6e..3b18e51 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1 @@
+-hello moon
++hello world
+
+$ git revert --continue
+[master 970dba7] Revert "stupid change"
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+---
+## Mistake fixed, with audit trail
+```
+$ git log
+commit 970dba776664a6395a1c85f1fc7a9e20c38e6b23
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 10:58:31 2013 -0500
+
+    Revert "stupid change"
     
+    This reverts commit fee84b14cee088934c69ea5fd1c168e1b55970c5.
 
+commit fee84b14cee088934c69ea5fd1c168e1b55970c5
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 10:55:56 2013 -0500
+
+    stupid change
+
+commit c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 06:16:33 2013 -0800
+
+    hello world
+```
+---
+class: center
+# Other Tips
+---
+## Realize you messed up before push? --amend
+```
+$ git commit -a -m 'stupid change'
+[master 2a5ee36] stupid change
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ echo 'hello stars' > README.md 
+
+$ git commit -a -m 'a smart change' --amend
+[master fc4bfe5] a smart change
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git log
+commit fc4bfe5ddbe32230da034e41f5827bae3db6d1fb
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 11:04:04 2013 -0500
+
+    a smart change
+
+commit c3cf7f7f68004956361fe669ae9a9c1a0052b7f1
+Author: Jason Peddle <jwpeddle@gmail.com>
+Date:   Fri Nov 22 06:16:33 2013 -0800
+
+    hello world
+```
+---
+## Totally wrecked your local repo? Reset to origin
+```
+$ git branch
+* master
+
+$ git branch -a
+* master
+  remotes/origin/master
+
+$ git fetch
+
+$ git reset --hard origin/master 
+HEAD is now at c3cf7f7 hello world
+```
+---
+## Make changes to wrong branch, or otherwise want to temporarily stash things?
+```
+$ git status -s
+ M README.md
+
+$ git stash
+Saved working directory and index state WIP on master: c3cf7f7 hello world
+HEAD is now at c3cf7f7 hello world
+
+$ git status
+# On branch master
+nothing to commit, working directory clean
+
+$ git checkout -b another-branch
+Switched to a new branch 'another-branch'
+```
+---
+## Now unstash it
+```
+$ git stash show -p
+diff --git a/README.md b/README.md
+index 3b18e51..1b95c6e 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1 @@
+-hello world
++hello moon
+
+$ git stash pop
+# On branch another-branch
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   README.md
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (56c6323755da8f4b7a6c020d4c90df867a5ebf8e)
+```
+---
+class: center
+# Don't Panic
+---
+class: center
+# Questions?
+### @jwpeddle
+http://jwpeddle.github.com/git-talk/
+    </textarea>
+    <div id="slideshow"></div>
   </body>
 </html>
